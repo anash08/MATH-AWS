@@ -1,0 +1,251 @@
+/* Main app styles */
+.App {
+  text-align: center;
+  background-image: url('/home/pc/MY_app/math-Key/clientSocket/src/Figma2/Group 1849.png');
+  background-size: cover;
+  color: #ffffff; /* White text color */
+  font-family: 'Roboto', sans-serif;
+  /* background-color: #9B9C9E ; */
+  height: 100vh;
+}
+
+
+/* Input latex styles */
+.Input-latex {
+  display: contents;
+  align-items: center;
+}
+
+/* Blackboard styles */
+.blackboard {
+  background-color: #4F46BB ;
+  height: 8vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #ffffff; /* White text color */
+  font-size: 20px;
+  font-family: "Chalkboard", "Comic Sans MS", cursive;
+  margin-top: 8px;
+  border-radius:  20px; 
+  border-radius: 9px;
+  margin-left: 12px;
+  width: 94vw;
+}
+
+/* Button styles */
+.button {
+  background-color: #6b4d59; /* Brownish color */
+  color: #000000; /* Black text color */
+  border-radius: 5px;
+  padding: 10px;
+  margin: 5px;
+  font-size: 16px;
+  border: none;
+  cursor: pointer;
+  transition: transform 0.3s ease-in-out;
+}
+
+.button:hover {
+  transform: scale(1.05);
+}
+
+/* Convert button styles */
+.Convert-Btn {
+  border: none;
+  font-family: 'Poppins', sans-serif;
+  outline: none;
+  background: #B3B3B3
+
+
+
+
+
+  ; /* Orange color */
+  cursor: pointer;
+  position: relative;
+  z-index: 0;
+  border-radius: 20px;
+  height: 4vh;
+  width: 13ch;
+  color: #000000; /* Black text color */
+  padding: 1px;
+  transition: background-color 0.3s, transform 0.2s;
+}
+
+.Convert-Btn:hover {
+  background-color: #ff9000; /* Brighter orange color */
+  transform: scale(1.05);
+}
+
+/* Additional styles can be added here */
+
+
+.math-field {
+  height: 4vh;
+}
+
+.HomePageButtons {
+  margin-top: 36vh;
+
+}
+
+.KeyboardButton {
+  display: inline-block;
+  padding: 10px 20px;
+  margin: 10px;
+  background-color: #4F46BB  ;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  font-size: 16px;
+  text-decoration: none;
+  cursor: pointer;
+  transition: background-color 0.3s ease-in-out;
+}
+
+.KeyboardButton:hover {
+  background-color: #1A5276;
+}
+
+.send-btn {
+  border: none;
+  font-family: 'Poppins', sans-serif;
+  outline: none;
+  cursor: pointer;
+  position: relative;
+  z-index: 0;
+  border-radius: 20px;
+  height: 4vh;
+  /* width: 37ch; */
+  margin-left: 66vw;
+  margin-top: 41vh;
+  float: right;
+  left: 31px;
+
+
+}
+
+.latex-header {
+ 
+}
+/* Style the dropdown */
+/* Style the dropdown */
+/* Style the dropdown */
+/* Style the dropdown */
+
+
+.dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+/* Style the dropdown button */
+.dropbtn {
+  background-color: transparent;
+  border: none;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+/* Style the dropdown content */
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: #ffffff;
+  min-width: 20px;
+  /* box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2); */
+  z-index: 1;
+  margin-left: -9px;
+  opacity: 0;
+  transform: translateY(-10px);
+  transition: opacity 0.3s, transform 0.3s;
+}
+
+/* Show the dropdown content with animation */
+.dropdown:hover .dropdown-content {
+  display: block;
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Style the dropdown buttons */
+.dropdown-content button {
+  background-color: white;
+  cursor: pointer;
+  text-align: left;
+  opacity: 0;
+  transform: translateY(-20px);
+  transition: opacity 0.3s, transform 0.3s;
+}
+
+/* Animate the dropdown buttons */
+.dropdown:hover .dropdown-content button {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Highlight the button when hovering over */
+.dropdown-content button:hover {
+  background-color: #f1f1f1;
+}
+
+@keyframes shine {
+  0% {
+    transform: translateX(-100%); 
+  }
+  100% {
+    transform: translateX(30%); 
+    transform: translateY(60%);
+  }
+}
+
+.HomeButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #4F46BB ; 
+  color: white;
+  padding: 2px 4px;
+  position: absolute;
+  cursor: pointer;
+  transform-style: preserve-3d;
+  perspective: 800px;
+  transition: transform 0.5s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  font-family: Plus Jakarta sans-serif;
+  border-radius: 8px;
+  margin-top: 1vh;
+}
+
+.HomeButton h2 {
+  margin: 0;
+  transform: rotateY(0deg) translateZ(0);
+}
+
+.HomeButton:hover h2 {
+  transform: rotateY(360deg) translateZ(30px); /* Rotate and move forward on hover */
+}
+
+
+.ConvertedLatex {
+  background-color: #9B9C9E;
+  width: 94vw;
+  margin-left: 12px;
+  flex: 1;
+  border: none;
+  outline: none;
+  height: 55px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  color: rgb(0, 0, 0);
+  margin-top: 1vh;
+  border-radius: 8px;
+}
+
+.logo-img {
+
+}

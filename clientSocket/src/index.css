@@ -1,0 +1,311 @@
+/* Import Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
+
+/* Global styles */
+body {
+  margin: 0;
+  font-family: 'Poppins', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+code {
+  font-family: 'Poppins', sans-serif;
+}
+
+html, body {
+  overflow-x: hidden;
+  font-family: 'Poppins', sans-serif;
+}
+
+/* Input and math/chem wraps */
+#input-text {
+  width: 100%;
+  height: 100px;
+  padding-right: 50px;
+  box-sizing: border-box;
+}
+
+.math-input-wrap, .chem-input-wrap {
+  position: relative;
+  width: 100%;
+  background-color: #717171;
+  padding: 20px;
+}
+
+/* Styling for input text area */
+.keyboard-primary-div div #input-text {
+  border-radius: 35px;
+  background-color: #868686;
+  border: 1px solid #676767;
+  color: #fff;
+}
+
+/* Styling for send button */
+.sendbutton-wrap svg {
+  transform: scaleY(-0.9) scaleX(1) rotate(0deg);
+  position: absolute;
+  right: 5px;
+  top: 5px;
+}
+
+path#secondary {
+  fill: rgb(255 255 255) !important;
+}
+
+path#primary {
+  stroke: #717171 !important;
+}
+
+.sendbutton-wrap {
+  background: #717171;
+  height: 70px;
+  width: 70px;
+  position: absolute;
+  border-radius: 50px;
+  right: 35px;
+  top: 35px;
+  border-width: 2px;
+  border-style: outset;
+  border-color: buttonborder;
+  border-top-color: #a1a1a1;
+  border-right-color: #9f9f9f;
+  border-bottom-color: #9f9f9f;
+  border-left-color: #a1a1a1;
+}
+
+/* Background for Home */
+.Home-Background {
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  width: 100%;
+  align-items: center;
+  justify-content: center;
+  display: flex;
+  background-color: #21273b;
+}
+
+/* Styles for keyboard heading */
+.keyboard-head {
+  color: #ffffff;
+  font-size: 24px;
+  line-height: 34px;
+  margin-bottom: 35px;
+}
+
+/* Styles for keyboard wrap */
+.keyboard-primary-div {
+  padding: 20px;
+  border: 1px solid #3f3f3f;
+  margin: 0 auto;
+  width: 100%;
+}
+
+/* Styles for latex keyboard button */
+.latexkeyboard button {
+  background: #717171;
+  border-radius: 8px;
+  padding: 10px;
+  border: none;
+  color: #fff;
+  box-shadow: 0px 2px 1px 0px #454545;
+}
+
+/* Keyboard wrapper */
+.Keyboard-wrapper {
+  display: block;
+  align-items: center;
+  width: 100%;
+  margin-top: 10px;
+}
+
+/* Styles for paragraph wrap */
+.para-wrap {
+  background: #717171;
+  padding: 20px;
+}
+
+/* Styles for paragraphs */
+.para-wrap p {
+  color: #ffffff;
+  font-family: 'Poppins', sans-serif;
+  font-size: 24px;
+  white-space: pre-line;
+  padding: 20px;
+  border: 1px solid #676767;
+  background: #868686;
+  margin: 0;
+  border-radius: 25px;
+}
+
+/* Header styles */
+.header {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.home-button-wrap {
+  margin-right: 35px;
+  margin-top: 10px;
+}
+
+.home-button-wrap ul li {
+  margin: auto 15px;
+}
+
+.home-button-wrap ul {
+  display: flex;
+  flex-direction: row;
+  list-style: none;
+}
+
+/* Placeholder styles */
+::placeholder {
+  color: rgb(255, 255, 255);
+  opacity: 0.7;
+}
+
+:-ms-input-placeholder {
+  color: rgb(255, 255, 255);
+}
+
+::-ms-input-placeholder {
+  color: rgb(245, 245, 245);
+}
+
+/* Mobile devices media queries */
+@media (max-width: 480px) {
+  /* Adjust header and navigation for mobile */
+  .header {
+    flex-direction: column;
+  }
+  .home-button-wrap ul {
+    flex-direction: column;
+    align-items: center;
+    padding-left: 0px;
+    margin-left: 24px;
+  }
+  .home-button-wrap ul li {
+    margin-bottom: 15px;
+  }
+  
+  /* Adjust Home Background */
+  .Home-Background {
+    display: block;
+  } 
+
+  /* Adjust Keyboard Wrapper for mobile */
+  .Keyboard-wrapper {
+    position: relative;
+    width: 100%;
+    margin-top: 35px;
+    height: unset;
+  }
+
+  /* Adjust Header image SVG */
+  .Header-img-svg {
+    text-align: center;
+  }
+
+  .Header-img-svg svg {
+    /* height: 150px !important;
+    width: 100% !important;
+    padding-top: 35px;
+    text-align: left;
+    margin-bottom: 35px;
+    vertical-align: middle; */
+  }
+
+  /* Adjust animated heading */
+  #animated-heading {
+    font-size: 28px;
+    font-weight: 700;
+    line-height: 38px;
+    flex: 5 0 50%;
+    margin: auto;
+    text-align: center;
+    padding-bottom: 35px;
+    color: #34345b !important;
+  }
+
+  /* Adjust home button wrap */
+  .home-button-wrap {
+    padding-top: 35px;
+  }
+}
+
+/* Custom styles for canvas keyboard button */
+.canvas-key-icon {
+  border: none;
+  font-family: 'Poppins', sans-serif;
+  outline: none;
+  cursor: pointer;
+  position: relative;
+  z-index: 0;
+  border-radius: 20px;
+  height: 4vh;
+  width: 4ch;
+}
+
+/* Canvas button div styles */
+.canvas-btn-div {
+  height: 10vh;
+  display: inline-grid;
+
+
+}
+
+/* Styles for canvas editor */
+.canvas-editor {
+  width: 94vw;
+  height: 63vh;
+  background: linear-gradient(to bottom, #ffffff, #ffffff);
+  border-radius: 10px;
+  /* box-shadow: 0 5px 10px rgba(0,0,0,0.1); */
+  font-size: 32px;
+  font-family: 'PT Mono', monospace;
+  color: #F2F2F2;
+  padding: 10px;
+  /* animation: float 3s ease-in-out infinite; */
+  margin-left: 12px;
+
+}
+@keyframes float {
+  0% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+  100% {
+    transform: translateY(0);
+  }
+}
+.canvas-editor:hover {
+  background: linear-gradient(to bottom, White,white);
+}
+.key {
+  display: inline-block;
+  padding: 10px 20px;
+  border-radius: 20px;
+  /* box-shadow: 0 3px 5px rgba(0,0,0,0.1); */
+  margin: 10px;
+  background: #FD59FF;
+  color: #fff;
+}
+.key:hover {
+  transform: scale(1.2);
+}
+.key:active {
+  transform: scale(1);
+  box-shadow: 0 1px 2px rgba(0,0,0,0.5);
+}
+
+/* Additional styles can be added here */
+
+
+.CanvasComponent {
+margin-top: 53px;
+}
