@@ -1,8 +1,7 @@
 {
   "files": {
-    "main.css": "/static/css/main.6b2cd472.css",
-    "main.js": "/static/js/main.cb7eb99f.js",
-    "static/media/Group 1849.png": "/static/media/Group 1849.a6e947a1367672e161fe.png",
+    "main.css": "/static/css/main.b582a14e.css",
+    "main.js": "/static/js/main.452770e5.js",
     "static/media/KaTeX_AMS-Regular.ttf": "/static/media/KaTeX_AMS-Regular.853be92419a6c3766b9a.ttf",
     "static/media/KaTeX_Main-Regular.ttf": "/static/media/KaTeX_Main-Regular.9eba1d77abcf2aa6e94e.ttf",
     "static/media/KaTeX_Main-Bold.ttf": "/static/media/KaTeX_Main-Bold.8169508bf58f8bd92ad8.ttf",
@@ -69,11 +68,11 @@
     "static/media/Delete-btn.svg": "/static/media/Delete-btn.62bc2571ffed2543d9babe1cb571ca2d.svg",
     "static/media/noun-redo-btn.svg": "/static/media/noun-redo-btn.213ddd8fe66da290617e1d980323bb6d.svg",
     "static/media/noun-undo-btn.svg": "/static/media/noun-undo-btn.a461ab6dcb62b13b0f246dfdbcbb0551.svg",
-    "main.6b2cd472.css.map": "/static/css/main.6b2cd472.css.map",
-    "main.cb7eb99f.js.map": "/static/js/main.cb7eb99f.js.map"
+    "main.b582a14e.css.map": "/static/css/main.b582a14e.css.map",
+    "main.452770e5.js.map": "/static/js/main.452770e5.js.map"
   },
   "entrypoints": [
-    "static/css/main.6b2cd472.css",
-    "static/js/main.cb7eb99f.js"
+    "static/css/main.b582a14e.css",
+    "static/js/main.452770e5.js"
   ]
 }
