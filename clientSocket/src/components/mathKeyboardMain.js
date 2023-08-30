@@ -23,8 +23,8 @@ import katex from "katex";
 
 import logoimg from "/home/pc/MY_app/math-Key/clientSocket/src/UnifyGPT-logo-300x55.png";
 
- const socket = io("https://unitysocketbuild.onrender.com/");
-// const socket = io("http://localhost:9000");
+const socket = io("https://unitysocketbuild.onrender.com/");
+ //const socket = io("http://localhost:9000");
 
 
 

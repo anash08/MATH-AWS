@@ -82,7 +82,7 @@ app.post('/webhook', async (req, res) => {
     chain = new ConversationChain({ llm: model, memory: memory });
 
     const result1 = await chain.call({
-        input: `solve ${latexVal} mathematically in not more than 5 steps and show me the correct answer`
+        input: `solve ${latexVal} mathematically in not more than 5 steps, dont use any word or sentences, only use math numbers and symbols and show me the correct answer`
     });
 
     generations1 = result1.response;
@@ -90,7 +90,7 @@ app.post('/webhook', async (req, res) => {
     io.emit('convertedValue', convertedValue);
     io.emit('newGeneration', generations1);
 
-    // console.log({ result1 });
+    console.log({ result1 });
 
     res.status(200).send(generations1);
 });

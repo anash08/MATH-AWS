@@ -1,22 +1,13 @@
 import React, { useRef, useEffect, useState } from "react";
-import {
-  Button,
-  Divider,
-  Grid,
-  Select,
-  Tooltip,
-} from "@mui/material";
 
+import _ from 'lodash';
 
 
 import mathlive from 'mathlive'; // Use the actual package name
 import cortexComputeEngine from '@cortex-js/compute-engine'; // Use the actual
 
-import ButtonGroup from "@mui/material/ButtonGroup";
 import axios from "axios";
 import katex from "katex";
-import KeyboardIcon from "@mui/icons-material/Keyboard";
-import KeyboardHideTwoToneIcon from "@mui/icons-material/KeyboardHideTwoTone";
 import deleteIcon from "/home/pc/MY_app/math-Key/clientSocket/src/Delete-btn.svg";
 import io from "socket.io-client";
 import QRCode from "react-qr-code";
@@ -32,15 +23,11 @@ import sendIcon from "/home/pc/MY_app/math-Key/clientSocket/src/send-btn.svg"; /
 import "../index.css";
 import "../App.css";
 import * as iink from "iink-js";
-import IconButton from '@mui/material/IconButton';
-import Menu from '@mui/material/Menu';
-import MenuItem from '@mui/material/MenuItem';
-import MoreVertIcon from '@mui/icons-material/MoreVert';
 
 
 
 const socket = io("https://unitysocketbuild.onrender.com");
-// const socket = io("http://localhost:9000");
+//const socket = io("http://localhost:9000");
 
 const URL = "https://unitysocketbuild.onrender.com";
 //............................///..................................//
@@ -52,14 +39,12 @@ const ScientificKeyboard = ({
   generations,
   isKeyboardVisible,
 }) => {
-  const [outputValue, setOutputValue] = useState("");
   const [error, setError] = useState("");
   const [input, setInput] = useState("");
   const [previousConvertedValues, setPreviousConvertedValues] = useState([]);
 
   const [resultValue, setresultValue] = useState("");
   const [penType, setPenType] = useState("PEN");
-  const [ipAddress, setIpAddress] = useState("");
   const [userCode, setUserCode] = useState("");
   const [authenticated, setAuthenticated] = useState(false);
   const [authenticationCode, setAuthenticationCode] = useState("");
@@ -67,6 +52,8 @@ const ScientificKeyboard = ({
   const [responses, setResponses] = useState([]);
   const [anchorEl, setAnchorEl] = useState(null);
   const [conVal, setConVal] = useState(true);
+  const [fetchedData, setFetchedData] = useState(""); // Step 2
+
 
 
 
@@ -84,6 +71,12 @@ const ScientificKeyboard = ({
   const eraserElement = document.getElementById("eraser");
   const penElement = document.getElementById("pen");
   const erasePreciselyElement = document.getElementById("erase-precisely");
+
+
+
+
+
+
 
   const cleanLatex = (latexExport) => {
     if (latexExport.includes("\\\\")) {
@@ -134,17 +127,14 @@ const ScientificKeyboard = ({
     console.log("////////cleared.........//")
     editorElement.editor.clear();
     socket.emit("clearScreen");
-
-    setConVal(""); 
-
-    setConvertedValues([]);
+    setFetchedData(null); // Clear the fetchedData
+    clearElement.disabled = false;
   };
 
-  // const handleResult = () => {
-
-  //   editorElement.editor.resUpdate("result");
-  //   console.log("result from editor was.................//");
-  // };
+  const handleResult = () => {
+    editorElement.editor.resUpdate("result");
+    console.log("result from editor was.................//");
+  };
 
   const handleConvertElement = () => {
     editorElement.editor.convert();
@@ -152,13 +142,15 @@ const ScientificKeyboard = ({
     setPreviousConvertedValues(prevValues => [...prevValues, convertedValue]);
     // Emit the converted value through the socket
     socket.emit("convertedValue", convertedValue);
+    clearElement.disabled = false;
+
   };
-  
+
   // Use useEffect to log the updated previousConvertedValues
   useEffect(() => {
     console.log("Updated previousConvertedValues:", previousConvertedValues);
   }, [previousConvertedValues]); // Run the effect whenever previousConvertedValues changes
-  
+
 
   const handlePen = () => {
     console.log("Handle pen selection change");
@@ -185,8 +177,26 @@ const ScientificKeyboard = ({
     editorElement.editor.configuration = configuration;
   };
 
+  // const fetchConvertedValue = async () => {
+  //   setIsLoading(true);
+  //   try {
+  //     // const response = await axios.get(
+  //     //   "https://webhookforunity.onrender.com/convertedValue"
+  //     // );
+  //     const response = await axios.get(
+  //       "http://localhost:5000/convertedValue"
+  //     );
+  //     console.log("Response data:", response.data.result1);
+  //     setConVal(response.data.result1); // Assign response data directly to conVal
+  //     setReloadCount((prevCount) => prevCount + 1);
+  //   } catch (error) {
+  //     console.error("Error fetching converted value:", error);
+  //   }
+  //   setIsLoading(false);
+  // };
+  // fetchConvertedValue();
 
-  
+
   useEffect(() => {
     const editorElement = document.getElementById("editor");
     const resultElement = document.getElementById("result");
@@ -228,7 +238,7 @@ const ScientificKeyboard = ({
     const handleChanged = (event) => {
       undoElement.disabled = !event.detail.canUndo;
       redoElement.disabled = !event.detail.canRedo;
-      clearElement.disabled = event.detail.isEmpty;
+      //clearElement.disabled = event.detail.isEmpty;
 
       handleExported(event);
       console.log("........Event..............//", event);
@@ -247,26 +257,16 @@ const ScientificKeyboard = ({
       console.log("////////cleared.........//")
       editorElement.editor.clear();
       socket.emit("clearScreen");
-
-      setConVal(""); 
-
-      setConvertedValues([]);
-
     };
 
-    // const handleResult = () => {
-
-    //   editorElement.editor.resUpdate("result");
-    //   console.log("result from editor was.................//");
-    // };
 
     const handleConvert = () => {
       editorElement.editor.convert();
       const convertedValue = resultElement.innerText; // Get the converted value
-      
+
       // Update the state once with both previous and new values
       // setPreviousConvertedValues(prevValues => [...prevValues, convertedValue]);
-      
+
       // const symbols = katex.renderToString(convertedValue);
 
       socket.emit("convertedValue", convertedValue);
@@ -404,24 +404,6 @@ const ScientificKeyboard = ({
       // eslint-disable-next-line no-restricted-globals
       // location.reload();
     });
-    const fetchConvertedValue = async () => {
-      setIsLoading(true);
-      try {
-        // const response = await axios.get(
-        //   "https://webhookforunity.onrender.com/convertedValue"
-        // );
-        const response = await axios.get(
-          "http://localhost:5000/convertedValue"
-        );
-        console.log("Response data:", response.data.result1);
-        setConVal(response.data.result1); // Assign response data directly to conVal
-        setReloadCount((prevCount) => prevCount + 1);
-      } catch (error) {
-        console.error("Error fetching converted value:", error);
-      }
-      setIsLoading(false);
-    };
-    fetchConvertedValue();
 
     // socket.on("authenticationCode", (code) => {
     //   // Handle the authentication code received from the server
@@ -430,6 +412,8 @@ const ScientificKeyboard = ({
     //   // For example, you could update a <div> element with the code:
     //   document.getElementById("codeDisplay").textContent = code;
     // });
+
+
 
     window.addEventListener("resize", () => {
       editorElement.editor.resize();
@@ -467,24 +451,34 @@ const ScientificKeyboard = ({
 
 
 
-  const handleSend = () => {
+  const handleSend = async () => {
     const sendElement = document.getElementById("sendValueLatex");
     const convertedValue = sendElement.innerText; // Get the converted value
 
-    socket.emit("convertedValue", { convertedValue });
-    console.log("   sending userCode and convertedValue", convertedValue);
+    try {
+      // Make a POST request to the server with the converted value
+      const response = await axios.post("https://webhookforunity.onrender.com/webhook", {
+        convertedValue,
+      });
 
+      // Clear the editor content
+      handleClear()
+      // Update the state with the response data
+      setFetchedData(response.data);
+    } catch (error) {
+      console.error("Error sending converted value:", error);
+    }
 
+    // Clear the previous converted values and the send element
     setPreviousConvertedValues([]);
-
     sendElement.innerText = "";
-
-    // setTimeout(() => {
-    //   window.location.reload();
-    // }, 10000);
   };
 
- 
+
+  useEffect(() => {
+    console.log(".........FETCHED DATA............", fetchedData);
+  }, [fetchedData]);
+
 
 
   const [conValGen, setConValGen] = useState(true);
@@ -512,7 +506,6 @@ const ScientificKeyboard = ({
 
 
 
-  // Update the mathfield when the value changes
 
   const packageElementRef = useRef(null);
   const [sendValue, setSendValue] = useState(" ")
@@ -606,16 +599,16 @@ const ScientificKeyboard = ({
 
 
 
-  const ITEM_HEIGHT = 48;
+  // const ITEM_HEIGHT = 48;
 
 
-  const handleMenuClick = (event) => {
-    setAnchorEl(event.currentTarget);
-  };
+  // const handleMenuClick = (event) => {
+  //   setAnchorEl(event.currentTarget);
+  // };
 
-  const handleMenuClose = () => {
-    setAnchorEl(null);
-  };
+  // const handleMenuClose = () => {
+  //   setAnchorEl(null);
+  // };
 
 
   return (
@@ -646,6 +639,19 @@ const ScientificKeyboard = ({
 
 
         <h1 style={{ color: "grey" }}>Write Here:</h1>
+        <div>
+  <div>Response Data:</div>
+  <div>
+    {fetchedData &&
+      fetchedData.split('\n').map((step) => (
+        <div key={step}  style={{ color: 'black', fontSize: '16px'  }}>{step}<br /></div>
+      ))}
+  </div>
+</div>
+
+
+
+
 
         <code> {value}</code>
 
@@ -676,7 +682,7 @@ const ScientificKeyboard = ({
                   {/* Buttons in Dropdown */}
 
 
-                  <button id="clear" onClick={handleClear} style={{
+                  <button id="clear" onClick={handleClear} disabled={false} style={{
                     // backgroundColor: "#0383be",
                     // boxShadow: "0px 2px 4px rgba(0, 255, 255, 0.3)",
                     backgroundColor: "transparent",
@@ -749,17 +755,15 @@ const ScientificKeyboard = ({
             </div>
           </nav>
         </div>
-        Response Data: {conVal}
-
 
 
 
         <div
           className="Input-latex"
           style={{
-            }}
+          }}
         >
-          
+
 
 
 
@@ -783,19 +787,19 @@ const ScientificKeyboard = ({
           </button>
 
 
-          
+
 
         </div>
 
 
       </div>
-      <div className="ConvertedLatex" id = "sendValueLatex"
-            style={{
-             
-            }}
-          >
-            {previousConvertedValues.join(" ")}
-          </div>
+      <div className="ConvertedLatex" id="sendValueLatex"
+        style={{
+
+        }}
+      >
+        {previousConvertedValues.join(" ")}
+      </div>
 
 
       <div className="latex-header" style={{ display: "-ms-flexbox" }}>
@@ -838,7 +842,7 @@ const ScientificKeyboard = ({
             cursor: 'pointer',
             transition: 'transform 0.5s cubic-bezier(0.68, -0.55, 0.27, 1.55)',
 
-            fontStyle:"Plus Jakarta sans-serif"
+            fontStyle: "Plus Jakarta sans-serif"
           }}
             onMouseEnter={(e) => {
               e.target.style.transform = 'rotateY(360deg) translateZ(30px)';
@@ -866,9 +870,9 @@ const ScientificKeyboard = ({
           id="result"
           className="blackboard"
           style={{
-            
+
             color: "white",
-            
+
           }}
         >
           {convertedValues && (
