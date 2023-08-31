@@ -22,6 +22,7 @@ const allowedOrigins = [
   "http://localhost:3000",
   "172.20.10.1",
 ];
+let convertedValue = "";
 
 
 app.use(
@@ -61,8 +62,8 @@ function sendWebhook(convertedValue) {
     "............//the converted value from the client....",
     convertedValue
   );
-  // const webhookURL = "https://webhookforunity.onrender.com/webhook";
-   const webhookURL = "http://localhost:5000/webhook";
+  const webhookURL = "https://webhookforunity.onrender.com/webhook";
+  //  const webhookURL = "http://localhost:5000/webhook";
   axios
     .post(webhookURL, { convertedValue })
     .then((response) => {
@@ -111,7 +112,7 @@ io.on("connection", (socket) => {
     // if (socket.session.authenticated) {
     socket.broadcast.emit("convertedValue", convertedValue);
     console.log("................CONVERTEDVALUE", convertedValue);
-     //sendWebhook(convertedValue);
+     sendWebhook(convertedValue);
     // } else {
     // socket.emit('unauthorized');
     // }
@@ -130,9 +131,9 @@ io.on("connection", (socket) => {
   });
 });
 
-app.get("/", (req, res) => {
+app.get("/latex", (req, res) => {
   console.log("Get request to Homepage");
-  res.send("Hi, sent by server...");
+  res.send(`latex value:", ${convertedValue}` );
 });
 
 app.get("*", (req, res) => {

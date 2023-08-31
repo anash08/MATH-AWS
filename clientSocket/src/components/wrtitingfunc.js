@@ -8,17 +8,17 @@ import cortexComputeEngine from '@cortex-js/compute-engine'; // Use the actual
 
 import axios from "axios";
 import katex from "katex";
-import deleteIcon from "/home/pc/MY_app/math-Key/clientSocket/src/Delete-btn.svg";
+import deleteIcon from "../Delete-btn.svg";
 import io from "socket.io-client";
 import QRCode from "react-qr-code";
 import "katex/dist/katex.min.css";
 import { InlineMath, BlockMath } from "react-katex";
 import ReactDOM from "react-dom";
 import { QrReader } from "react-qr-reader";
-import undoIcon from "/home/pc/MY_app/math-Key/clientSocket/src/noun-undo-btn.svg"; // Import the SVG image
-import redoIcon from "/home/pc/MY_app/math-Key/clientSocket/src/noun-redo-btn.svg"; // Import
-import convertIcon from "/home/pc/MY_app/math-Key/clientSocket/src/convertIcon.svg"; // Import
-import sendIcon from "/home/pc/MY_app/math-Key/clientSocket/src/send-btn.svg"; // Import
+import undoIcon from "../noun-undo-btn.svg"; // Import the SVG image
+import redoIcon from "../noun-redo-btn.svg"; // Import
+import convertIcon from "../convertIcon.svg"; // Import
+import sendIcon from "../send-btn.svg"; // Import
 
 import "../index.css";
 import "../App.css";
@@ -26,10 +26,11 @@ import * as iink from "iink-js";
 
 
 
+// const socket = io("http://18.191.250.59:9000");
+// const socket = io("http://localhost:9000");
 const socket = io("https://unitysocketbuild.onrender.com");
-//const socket = io("http://localhost:9000");
 
-const URL = "https://unitysocketbuild.onrender.com";
+const URL = "http://18.191.250.59:9000";
 //............................///..................................//
 const ScientificKeyboard = ({
   handleInput,
@@ -454,20 +455,22 @@ const ScientificKeyboard = ({
   const handleSend = async () => {
     const sendElement = document.getElementById("sendValueLatex");
     const convertedValue = sendElement.innerText; // Get the converted value
+    console.log("....VALUE...", convertedValue);
+    
+    // try {
+    //   // Make a POST request to the server with the converted value
+    //   const response = await axios.post("https://webhookforunity.onrender.com/webhook", {
+    //   // const response = await axios.post("http://localhost:5000/webhook", {
+    //     convertedValue,
+    //   });
 
-    try {
-      // Make a POST request to the server with the converted value
-      const response = await axios.post("https://webhookforunity.onrender.com/webhook", {
-        convertedValue,
-      });
-
-      // Clear the editor content
-      handleClear()
-      // Update the state with the response data
-      setFetchedData(response.data);
-    } catch (error) {
-      console.error("Error sending converted value:", error);
-    }
+    //   // Clear the editor content
+    //   handleClear()
+    //   // Update the state with the response data
+    //   setFetchedData(response.data);
+    // } catch (error) {
+    //   console.error("Error sending converted value:", error);
+    // }
 
     // Clear the previous converted values and the send element
     setPreviousConvertedValues([]);
@@ -639,15 +642,7 @@ const ScientificKeyboard = ({
 
 
         <h1 style={{ color: "grey" }}>Write Here:</h1>
-        <div>
-  <div>Response Data:</div>
-  <div>
-    {fetchedData &&
-      fetchedData.split('\n').map((step) => (
-        <div key={step}  style={{ color: 'black', fontSize: '16px'  }}>{step}<br /></div>
-      ))}
-  </div>
-</div>
+
 
 
 
@@ -757,6 +752,14 @@ const ScientificKeyboard = ({
         </div>
 
 
+        <div>
+          <div className="response-container">
+            {fetchedData &&
+              fetchedData.split('\n').map((step) => (
+                <div key={step} style={{ color: 'black', fontSize: '16px' }}>{step}<br /></div>
+              ))}
+          </div>
+        </div>
 
         <div
           className="Input-latex"
@@ -791,6 +794,8 @@ const ScientificKeyboard = ({
 
         </div>
 
+        
+
 
       </div>
       <div className="ConvertedLatex" id="sendValueLatex"
@@ -817,32 +822,22 @@ const ScientificKeyboard = ({
 
         <div style={{
           display: 'table',
-          alignItems: 'center',
-          justifyContent: 'center',
           // border: '2px solid #00537f', // Darker border color
           borderRadius: '20px',
           marginTop: '1vh',
           // fontFamily: 'system-ui',
         }}>
-          <h2 style={{
+          <h2 className= "Latex-field" style={{
             display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
             // background: 'linear-gradient(135deg, #00537f, #002b40)',
             // background: "#9B9C9E",
-            color: '#9B9C9E',
             padding: '2px 20px',
             borderRadius: '8px',
             // boxShadow: '0px 4px 6px rgba(0, 0, 0, 0.1)',
             margin: 0,
             fontWeight: 'bold',
-            textTransform: 'uppercase',
-            letterSpacing: '2px',
             transform: 'rotateY(0deg) translateZ(0)',
-            cursor: 'pointer',
-            transition: 'transform 0.5s cubic-bezier(0.68, -0.55, 0.27, 1.55)',
 
-            fontStyle: "Plus Jakarta sans-serif"
           }}
             onMouseEnter={(e) => {
               e.target.style.transform = 'rotateY(360deg) translateZ(30px)';

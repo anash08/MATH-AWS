@@ -5,7 +5,7 @@ import '../App.css'
 import mathlive from 'mathlive'; // Use the actual package name
 import cortexComputeEngine from '@cortex-js/compute-engine'; // Use the actual package name
 
-import "/home/pc/MY_app/math-Key/clientSocket/src/App.js"
+import "../App.js"
 
 
 import * as THREE from 'three';
@@ -21,10 +21,11 @@ import katex from "katex";
 
 // import LatKeyboard from "./components/latexKeyboard";
 
-import logoimg from "/home/pc/MY_app/math-Key/clientSocket/src/UnifyGPT-logo-300x55.png";
+import logoimg from "../UnifyGPT-logo-300x55.png";
 
-const socket = io("https://unitysocketbuild.onrender.com/");
- //const socket = io("http://localhost:9000");
+//  const socket = io("http://18.191.250.59:9000");
+//  const socket = io("http://localhost:9000");
+ const socket = io("https://unitysocketbuild.onrender.com");
 
 
 
@@ -411,7 +412,7 @@ const MathKeyCan = ({ goHome }) => {
                         e.target.style.transform = 'rotateY(0deg) translateZ(0)'; // Restore rotation and position on hover out
                       }}
                     >
-                      MathKeyboard
+                      Math Keyboard
                     </h2>
                   </div>
 

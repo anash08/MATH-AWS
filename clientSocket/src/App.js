@@ -3,7 +3,7 @@
 import React, { useState } from 'react';
 import './App.css';
 import MathKeyCan from './components/mathKeyboardMain';
-import logoimg from "/home/pc/MY_app/math-Key/clientSocket/src/UnifyGPT-logo-300x55.png";
+import logoimg from "./UnifyGPT-logo-300x55.png";
 
 function App() {
   const [showMath, setShowMath] = useState(true); // Change the initial state to true

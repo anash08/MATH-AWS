@@ -259,6 +259,7 @@ path#primary {
 
 /* Styles for canvas editor */
 .canvas-editor {
+
   width: 94vw;
   height: 63vh;
   background: linear-gradient(to bottom, #ffffff, #ffffff);
