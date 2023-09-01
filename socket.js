@@ -6,11 +6,15 @@ const cors = require("cors");
 const axios = require("axios");
 const session = require("express-session");
 const sharedSession = require("express-socket.io-session");
+const bodyParser = require("body-parser");
 
 const app = express();
 const server = http.createServer(app);
 const io = socketIO(server);
 const PORT = process.env.PORT || 9000;
+app.use(cors());
+app.use(bodyParser.json());
+
 const allowedOrigins = [
   "http://192.168.100.61:3000",
   "http://192.168.100.78:3000",
@@ -21,8 +25,9 @@ const allowedOrigins = [
   "http://192.168.1.8",
   "http://localhost:3000",
   "172.20.10.1",
+  "http://localhost:9000",
 ];
-let convertedValue = "";
+let latexValue = "";
 
 
 app.use(
@@ -62,8 +67,8 @@ function sendWebhook(convertedValue) {
     "............//the converted value from the client....",
     convertedValue
   );
-  const webhookURL = "https://webhookforunity.onrender.com/webhook";
-  //  const webhookURL = "http://localhost:5000/webhook";
+  // const webhookURL = "https://webhookforunity.onrender.com/webhook";
+   const webhookURL = "http://localhost:5000/webhook";
   axios
     .post(webhookURL, { convertedValue })
     .then((response) => {
@@ -108,11 +113,13 @@ io.on("connection", (socket) => {
   // });
 
   socket.on("convertedValue", (convertedValue) => {
+    latexValue = convertedValue; // Update the convertedValue
+
     // Check if the user is authenticated
     // if (socket.session.authenticated) {
     socket.broadcast.emit("convertedValue", convertedValue);
     console.log("................CONVERTEDVALUE", convertedValue);
-     sendWebhook(convertedValue);
+    //  sendWebhook(convertedValue);
     // } else {
     // socket.emit('unauthorized');
     // }
@@ -131,10 +138,32 @@ io.on("connection", (socket) => {
   });
 });
 
-app.get("/latex", (req, res) => {
-  console.log("Get request to Homepage");
-  res.send(`latex value:", ${convertedValue}` );
+app.get("/fetchlatexValue", (req, res) => {
+  res.json({ convertedValue });
 });
+
+
+
+app.post("/sendConvertedValue", (req, res) => {
+  try {
+    const { convertedValue: newValue } = req.body;
+    // Log the received value for debugging
+    console.log("Received convertedValue:", newValue);
+
+    // Update the convertedValue variable
+    convertedValue = newValue;
+
+    // Process the `convertedValue` as needed here
+
+    // Respond with a success message or any data you want
+    res.status(200).json({ message: "Received convertedValue successfully" });
+  } catch (error) {
+    console.error("Error processing request:", error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+});
+
+
 
 app.get("*", (req, res) => {
   res.sendFile(path.resolve(__dirname, "clientSocket", "build", "index.html"));

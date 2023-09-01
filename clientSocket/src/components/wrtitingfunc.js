@@ -26,9 +26,9 @@ import * as iink from "iink-js";
 
 
 
-// const socket = io("http://18.191.250.59:9000");
+const socket = io("http://18.191.250.59:9000");
 // const socket = io("http://localhost:9000");
-const socket = io("https://unitysocketbuild.onrender.com");
+// const socket = io("https://unitysocketbuild.onrender.com");
 
 const URL = "http://18.191.250.59:9000";
 //............................///..................................//
@@ -457,20 +457,27 @@ const ScientificKeyboard = ({
     const convertedValue = sendElement.innerText; // Get the converted value
     console.log("....VALUE...", convertedValue);
     
-    // try {
-    //   // Make a POST request to the server with the converted value
-    //   const response = await axios.post("https://webhookforunity.onrender.com/webhook", {
-    //   // const response = await axios.post("http://localhost:5000/webhook", {
-    //     convertedValue,
-    //   });
+    try {
+      // Make a POST request to the server with the converted value
+      // const response = await axios.post("https://webhookforunity.onrender.com/webhook", {
+      // const response = await axios.post("http://localhost:8000/run_chain_dynamically", {
+        const response = await axios.post("http://18.191.250.59:9000/sendConvertedValue", {
+          convertedValue,
+        }, {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
+        
+      console.log("Response from the server:", response);
 
-    //   // Clear the editor content
-    //   handleClear()
-    //   // Update the state with the response data
-    //   setFetchedData(response.data);
-    // } catch (error) {
-    //   console.error("Error sending converted value:", error);
-    // }
+      // Clear the editor content
+      handleClear()
+      // Update the state with the response data
+      setFetchedData(response.data);
+    } catch (error) {
+      console.error("Error sending converted value:", error);
+    }
 
     // Clear the previous converted values and the send element
     setPreviousConvertedValues([]);
@@ -752,14 +759,14 @@ const ScientificKeyboard = ({
         </div>
 
 
-        <div>
+        {/* <div>
           <div className="response-container">
             {fetchedData &&
               fetchedData.split('\n').map((step) => (
                 <div key={step} style={{ color: 'black', fontSize: '16px' }}>{step}<br /></div>
               ))}
           </div>
-        </div>
+        </div> */}
 
         <div
           className="Input-latex"
