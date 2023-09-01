@@ -178,25 +178,7 @@ const ScientificKeyboard = ({
     editorElement.editor.configuration = configuration;
   };
 
-  // const fetchConvertedValue = async () => {
-  //   setIsLoading(true);
-  //   try {
-  //     // const response = await axios.get(
-  //     //   "https://webhookforunity.onrender.com/convertedValue"
-  //     // );
-  //     const response = await axios.get(
-  //       "http://localhost:5000/convertedValue"
-  //     );
-  //     console.log("Response data:", response.data.result1);
-  //     setConVal(response.data.result1); // Assign response data directly to conVal
-  //     setReloadCount((prevCount) => prevCount + 1);
-  //   } catch (error) {
-  //     console.error("Error fetching converted value:", error);
-  //   }
-  //   setIsLoading(false);
-  // };
-  // fetchConvertedValue();
-
+  
 
   useEffect(() => {
     const editorElement = document.getElementById("editor");
@@ -461,6 +443,7 @@ const ScientificKeyboard = ({
       // Make a POST request to the server with the converted value
       // const response = await axios.post("https://webhookforunity.onrender.com/webhook", {
       // const response = await axios.post("http://localhost:8000/run_chain_dynamically", {
+      // const response = await axios.post("http://localhost:9000/sendConvertedValue", {
         const response = await axios.post("http://18.191.250.59:9000/sendConvertedValue", {
           convertedValue,
         }, {

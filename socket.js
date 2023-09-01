@@ -26,6 +26,7 @@ const allowedOrigins = [
   "http://localhost:3000",
   "172.20.10.1",
   "http://localhost:9000",
+  "http://18.191.250.59:9000"
 ];
 let latexValue = "";
 
