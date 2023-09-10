@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/static/css/main.9379d6cb.css",
-    "main.js": "/static/js/main.bf737075.js",
+    "main.js": "/static/js/main.ed483bcc.js",
     "static/media/KaTeX_AMS-Regular.ttf": "/static/media/KaTeX_AMS-Regular.853be92419a6c3766b9a.ttf",
     "static/media/KaTeX_Main-Regular.ttf": "/static/media/KaTeX_Main-Regular.9eba1d77abcf2aa6e94e.ttf",
     "static/media/KaTeX_Main-Bold.ttf": "/static/media/KaTeX_Main-Bold.8169508bf58f8bd92ad8.ttf",
@@ -70,10 +70,10 @@
     "static/media/noun-undo-btn.svg": "/static/media/noun-undo-btn.a461ab6dcb62b13b0f246dfdbcbb0551.svg",
     "static/media/loading.svg": "/static/media/loading.70842d754983d25c2e4f0cecddcad13f.svg",
     "main.9379d6cb.css.map": "/static/css/main.9379d6cb.css.map",
-    "main.bf737075.js.map": "/static/js/main.bf737075.js.map"
+    "main.ed483bcc.js.map": "/static/js/main.ed483bcc.js.map"
   },
   "entrypoints": [
     "static/css/main.9379d6cb.css",
-    "static/js/main.bf737075.js"
+    "static/js/main.ed483bcc.js"
   ]
 }
