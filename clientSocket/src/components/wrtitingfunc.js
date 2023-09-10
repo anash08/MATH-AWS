@@ -19,6 +19,7 @@ import undoIcon from "../noun-undo-btn.svg"; // Import the SVG image
 import redoIcon from "../noun-redo-btn.svg"; // Import
 import convertIcon from "../convertIcon.svg"; // Import
 import sendIcon from "../send-btn.svg"; // Import
+import loadingAnimation from "../loading.svg"
 
 import "../index.css";
 import "../App.css";
@@ -26,9 +27,9 @@ import * as iink from "iink-js";
 
 
 
-const socket = io("http://18.191.250.59:9000");
+// const socket = io("http://18.191.250.59:9000");
 // const socket = io("http://localhost:9000");
-// const socket = io("https://unitysocketbuild.onrender.com");
+const socket = io("https://unitysocketbuild.onrender.com");
 
 const URL = "http://18.191.250.59:9000";
 //............................///..................................//
@@ -54,6 +55,11 @@ const ScientificKeyboard = ({
   const [anchorEl, setAnchorEl] = useState(null);
   const [conVal, setConVal] = useState(true);
   const [fetchedData, setFetchedData] = useState(""); // Step 2
+  const [isLoading, setIsLoading] = useState(false);
+  const [inputValue, setInputValue] = useState('');
+  const [showSendButton, setShowSendButton] = useState(true);
+
+
 
 
 
@@ -178,7 +184,7 @@ const ScientificKeyboard = ({
     editorElement.editor.configuration = configuration;
   };
 
-  
+
 
   useEffect(() => {
     const editorElement = document.getElementById("editor");
@@ -332,6 +338,8 @@ const ScientificKeyboard = ({
         },
       },
     });
+
+
     socket.on("convertedValue", (convertedValue) => {
       // Clear the editor element before rendering the converted value
       const editorElement = document.getElementById("editor");
@@ -343,8 +351,12 @@ const ScientificKeyboard = ({
       mathNode.innerHTML = renderedValue;
 
       editorElement.appendChild(mathNode);
+      mathNode.style.display = "flex";
+      mathNode.style.alignItems = "center";
+      mathNode.style.justifyContent = "center";
+      mathNode.style.height = "100%"; // Ensure the mathNode takes up the full height
+
       mathNode.style.fontSize = "70px";
-      mathNode.style.position = "fixed";
       mathNode.style.zIndex = "9999"; // Higher value to bring it to the front
       mathNode.style.right = "8%"; // Adjust the vertical position as needed
       mathNode.style.bottom = "40%"; // Adjust the horizontal position as needed
@@ -435,36 +447,51 @@ const ScientificKeyboard = ({
 
 
   const handleSend = async () => {
+    handleClear();
+
+
     const sendElement = document.getElementById("sendValueLatex");
-    const convertedValue = sendElement.innerText; // Get the converted value
-    console.log("....VALUE...", convertedValue);
-    
+    const convertedValue = sendElement.innerText;
+
     try {
+      setIsLoading(true); // Show the loading animation when sending data.
+
       // Make a POST request to the server with the converted value
-      // const response = await axios.post("https://webhookforunity.onrender.com/webhook", {
       // const response = await axios.post("http://localhost:8000/run_chain_dynamically", {
-      // const response = await axios.post("http://localhost:9000/sendConvertedValue", {
-        const response = await axios.post("http://18.191.250.59:9000/sendConvertedValue", {
-          convertedValue,
-        }, {
-          headers: {
-            "Content-Type": "application/json",
-          },
-        });
-        
+      // const response = await axios.post("http://localhost:5000/webhook", {
+      const response = await axios.post("https://webhookforunity.onrender.com/webhook", {
+        convertedValue,
+      }, {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+
       console.log("Response from the server:", response);
 
       // Clear the editor content
-      handleClear()
-      // Update the state with the response data
-      setFetchedData(response.data);
+
+        setIsLoading(false);
+        setFetchedData(response.data); // Replace with actual fetched data
+        setShowSendButton(false); // Hide the send button
+        setPreviousConvertedValues([]);
+
+      // Hide the loading animation after you have received and processed the data.
     } catch (error) {
       console.error("Error sending converted value:", error);
+      setIsLoading(false);
+
+    } finally {
+      setIsLoading(false);
+
+
+      // Ensure that even if there's an error, the loading animation is turned off.
     }
 
     // Clear the previous converted values and the send element
     setPreviousConvertedValues([]);
     sendElement.innerText = "";
+
   };
 
 
@@ -503,7 +530,7 @@ const ScientificKeyboard = ({
   const packageElementRef = useRef(null);
   const [sendValue, setSendValue] = useState(" ")
   const [reloadCount, setReloadCount] = useState(0);
-  const [isLoading, setIsLoading] = useState(false);
+  // const [isLoading, setIsLoading] = useState(false);
   const [value, setValue] = useState("");
 
 
@@ -588,20 +615,74 @@ const ScientificKeyboard = ({
   };
 
 
+  // ...
+
+  const handleInputChange = (event) => {
+    const newValue = event.target.value;
+    setInputValue(newValue);
+    console.log("****************", newValue);
 
 
+  };
 
+  const handleSendValue = async () => {
+    console.log("****************", inputValue);
+    try {
+      setIsLoading(true); // Show the loading animation when sending data.
+  
+      // Make a POST request to the server with the converted value
+      const response = await axios.post("https://webhookforunity.onrender.com/res2", {
+        inputValue,
+      }, {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+  
+      console.log("Response from the server:", response);
+  
+      if (typeof response.data === 'string' || response.data instanceof String) {
+        // Check if response.data is a string or can be converted to a string
+        setIsLoading(false);
+        setFetchedData(response.data); // Set the fetched data as a string
+        setShowSendButton(false); // Hide the send button
+        setPreviousConvertedValues([]);
+      } else {
+        // Check if the response data is JSON and can be converted to a string
+        if (typeof response.data === 'object' || response.data instanceof Object) {
+          const data = JSON.stringify(response.data)
 
-  // const ITEM_HEIGHT = 48;
+          // console.log(data, "***********************************************")
+          const parsedData = JSON.parse(data);
+          const res2Content = parsedData.res2;
+          console.log(res2Content, "*******************************************sadasd****");
 
+          
+          setIsLoading(false);
+          setFetchedData(res2Content); // Convert JSON to string
+          setShowSendButton(false); // Hide the send button
+          setPreviousConvertedValues([]);
+        } else {
+          console.error("Response data is not a string:", response.data);
+          // Handle the case where response.data cannot be converted to a string
+          // You can set an appropriate error message or handle it according to your needs.
+        }
+      }
+  
+      // Hide the loading animation after you have received and processed the data.
+    } catch (error) {
+      console.error("Error sending converted value:", error);
+      setIsLoading(false);
+    } finally {
+      setIsLoading(false);
+      // Ensure that even if there's an error, the loading animation is turned off.
+    }
+  
+    // Clear the previous converted values and the send element
+    setPreviousConvertedValues([]);
+  };
+  
 
-  // const handleMenuClick = (event) => {
-  //   setAnchorEl(event.currentTarget);
-  // };
-
-  // const handleMenuClose = () => {
-  //   setAnchorEl(null);
-  // };
 
 
   return (
@@ -742,14 +823,61 @@ const ScientificKeyboard = ({
         </div>
 
 
-        {/* <div>
-          <div className="response-container">
-            {fetchedData &&
-              fetchedData.split('\n').map((step) => (
-                <div key={step} style={{ color: 'black', fontSize: '16px' }}>{step}<br /></div>
+        <div>
+          {showSendButton && (
+            <button
+              className="send-btn"
+              id="send"
+              style={{
+                padding: "60px",
+                backgroundImage: `url(${sendIcon})`,
+                backgroundSize: "contain",
+                backgroundRepeat: "no-repeat",
+                backgroundColor: "transparent",
+                backgroundPosition: "center",
+              }}
+              onClick={handleSend}
+            >
+              <img
+                src={sendIcon}
+                alt="Send"
+                style={{ width: "70%", height: "50%" }}
+              />
+            </button>
+          )}
+          {isLoading && (
+            <div className="loading-container">
+              <img src={loadingAnimation} alt="Loading" />
+              <p>Loading...</p>
+            </div>
+          )}
+          {fetchedData && (
+            <div className="response-container">
+              {fetchedData.split('\n').map((step) => (
+                <div className="response-item" key={step}>
+                  {step}
+                </div>
               ))}
-          </div>
-        </div> */}
+            </div>
+          )}
+          {fetchedData && (
+            <div className="input-container">
+              <input
+                type="text"
+                placeholder="Enter something"
+                value={inputValue}
+                onChange={handleInputChange}
+              />
+              {!showSendButton && (
+                <button className="send-res-value"  onClick={handleSendValue}>Send</button>
+              )}
+            </div>
+          )}
+        </div>
+
+
+
+
 
         <div
           className="Input-latex"
@@ -759,32 +887,9 @@ const ScientificKeyboard = ({
 
 
 
-
-          <button
-            className="send-btn"
-            id="send"
-            style={{
-              // boxShadow: "white",
-              padding: "60px", // Add padding here to increase the size of the button
-              backgroundImage: `url(${sendIcon})`,
-
-              backgroundSize: "contain",
-              backgroundRepeat: "no-repeat",
-              backgroundColor: "transparent",
-              backgroundPosition: "center",
-            }}
-            onClick={handleSend}
-          >
-            <sendIcon style={{ width: "70%", height: "50%" }} />
-
-          </button>
-
-
-
-
         </div>
 
-        
+
 
 
       </div>
@@ -817,7 +922,7 @@ const ScientificKeyboard = ({
           marginTop: '1vh',
           // fontFamily: 'system-ui',
         }}>
-          <h2 className= "Latex-field" style={{
+          <h2 className="Latex-field" style={{
             display: 'flex',
             // background: 'linear-gradient(135deg, #00537f, #002b40)',
             // background: "#9B9C9E",

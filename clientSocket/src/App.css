@@ -117,13 +117,32 @@
   border-radius: 20px;
   height: 4vh;
   /* width: 37ch; */
-  margin-left: 66vw;
-  margin-top: 41vh;
+  left: 66vw;
+  top: 41vh;
   float: right;
   left: 31px;
 
 
 }
+
+/* Your CSS file, e.g., styles.css */
+
+/* Styling for the button with className "send-res-value" */
+.send-res-value {
+  /* Add your desired styles here */
+  background-color: #007bff; /* Change to your preferred background color */
+  color: #fff; /* Text color */
+  padding: 10px 20px; /* Adjust padding as needed */
+  font-size: 16px; /* Adjust font size as needed */
+  border: none; /* Remove the border if desired */
+  cursor: pointer; /* Add a pointer cursor on hover */
+}
+
+/* Optional: Hover effect */
+.send-res-value:hover {
+  background-color: #0056b3; /* Change to a darker color on hover if desired */
+}
+
 
 .latex-header {
  
@@ -227,6 +246,89 @@
   transform: rotateY(360deg) translateZ(30px); /* Rotate and move forward on hover */
 }
 
+.response-container {
+  width: 100%;
+  max-height: 32vh; 
+  overflow-y: auto; 
+  overflow-x: auto; 
+  justify-content: center; /* Center horizontally */
+  align-items: center; /* Center vertically */
+  /* Define your other styles here */
+  background-color: #ffffff; /* Example background color */
+  padding: 10px; /* Example padding */
+  border: 1px solid #ffffff; /* Example border */
+  border-radius: 5px;
+
+  font-size: medium;
+  position: relative;
+  color: #000000;
+}
+
+.response-item {
+  background-color: #ffffff; /* Background color */
+  /* border: 1px solid #ddd; Border style */
+  /* padding: 10px;  */
+  margin: 15px; 
+  text-align: center; /* Center text horizontally */
+  font-size: 16px; /* Font size */
+  color: #333; /* Text color */
+  border-radius: 5px; /* Rounded corners */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Box shadow for a subtle lift */
+}
+
+.input-container {
+  display: flex;
+  align-items: center; /* Center items vertically */
+  position: relative;
+  top: 10vh;
+}
+
+.input-container input {
+  flex: 1; /* Allow the input field to expand and take available space */
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.input-container button {
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-left: 10px; /* Add some spacing between the input and the button */
+}
+
+
+.loading-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: white; /* Semi-transparent white background */
+  z-index: 1000; /* Ensure it appears above other content */
+}
+
+.loading-text {
+  margin-top: 10px; /* Adjust as needed to position the text below the loading animation */
+  font-size: 18px; /* Adjust the font size as needed */
+  color: #333; /* Text color */
+}
+
+.loading-animation {
+  /* Style for the loading animation image or spinner */
+  width: 100px; /* Adjust the width as needed */
+  height: 100px; /* Adjust the height as needed */
+  /* Add animation styles here if applicable */
+}
+
+
 
 .ConvertedLatex {
   background-color: #9B9C9E;
@@ -263,4 +365,3 @@
   letter-spacing: 1px;
   font-family: Plus Jakarta sans-serif;
 }
-
