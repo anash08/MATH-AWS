@@ -15,6 +15,13 @@ const PORT = process.env.PORT || 9000;
 app.use(cors());
 app.use(bodyParser.json());
 
+
+app.use((req,res,next)=>{
+  res.setHeader('Access-Control-Allow-Origin','*');
+  res.setHeader('Access-Control-Allow-Methods','GET,POST,PUT,PATCH,DELETE');
+  res.setHeader('Access-Control-Allow-Methods','Content-Type','Authorization');
+  next(); 
+})
 const allowedOrigins = [
   "http://192.168.100.61:3000",
   "http://192.168.100.78:3000",
@@ -24,7 +31,11 @@ const allowedOrigins = [
   "http://192.168.100.61:3000",
   "http://192.168.1.8",
   "http://localhost:3000",
+  "http://172.20.10.3:3000",
+  "http://172.20.10.1",
   "172.20.10.1",
+  "http://192.168.1.7:3000",
+  "http://192.168.1.14",
   "http://localhost:9000",
   "http://18.191.250.59:9000"
 ];
@@ -164,6 +175,25 @@ app.post("/sendConvertedValue", (req, res) => {
   }
 });
 
+
+
+app.get("/init-session", (req, res) => {
+  // Generate a unique session identifier (you can use a library like uuid)
+  const sessionId = generateSessionId();
+
+  // Store the session identifier in the user's session
+  req.session.sessionId = sessionId;
+
+  // Save the session
+  req.session.save((err) => {
+    if (err) {
+      console.error("Error saving session:", err);
+      res.status(500).json({ error: "Internal Server Error" });
+    } else {
+      res.json({ sessionId });
+    }
+  });
+});
 
 
 app.get("*", (req, res) => {

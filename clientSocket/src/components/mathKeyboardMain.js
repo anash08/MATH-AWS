@@ -25,7 +25,9 @@ import logoimg from "../UnifyGPT-logo-300x55.png";
 
 //  const socket = io("http://18.191.250.59:9000");
 //  const socket = io("http://localhost:9000");
- const socket = io("https://unitysocketbuild.onrender.com");
+//  const socket = io("https://unitysocketbuild.onrender.com");
+const socket = io("http://172.20.10.3:9000");
+
 
 
 
@@ -68,30 +70,11 @@ const MathKeyCan = ({ goHome }) => {
     setActiveComponent(activeComponent === component ? null : component);
   };
 
-  // const toggleKeyboard = () => {
-  //   setKeyboardVisible(!isKeyboardVisible);
-  // };
+  
 
 
   useEffect(() => {
-    // const fetchConvertedValue = async () => {
-    //   setIsLoading(true);
-    //   try {
-    //     // const response = await axios.get(
-    //     //   "https://webhookforunity.onrender.com/convertedValue"
-    //     // );
-    //     const response = await axios.get(
-    //       "http://localhost:5000/convertedValue"
-    //     );
-    //     console.log("Response data:", response.data.result1);
-    //     setConVal(response.data.result1); // Assign response data directly to conVal
-    //     setReloadCount((prevCount) => prevCount + 1);
-    //   } catch (error) {
-    //     console.error("Error fetching converted value:", error);
-    //   }
-    //   setIsLoading(false);
-    // };
-    // fetchConvertedValue();
+  
 
     const isAuthenticated = localStorage.getItem("authenticated");
     if (isAuthenticated) {

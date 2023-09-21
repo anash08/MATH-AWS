@@ -11,6 +11,7 @@ function App() {
   const handleHomeClick = () => {
     setShowMath(false);
   };
+  
 
   return (
     <div className="App">

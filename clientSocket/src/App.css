@@ -1,4 +1,5 @@
 /* Main app styles */
+
 .App {
   text-align: center;
   background-size: cover;
@@ -6,6 +7,8 @@
   font-family: 'Roboto', sans-serif;
   background-color: #000000 ;
   height: 100vh;
+  cursor: url('./pen.png'), auto;
+
 }
 
 
@@ -30,6 +33,7 @@
   border-radius: 9px;
   margin-left: 12px;
   width: 94vw;
+  
 }
 
 /* Button styles */
@@ -217,6 +221,13 @@
     transform: translateY(60%);
   }
 }
+/* Add styles for the disabled editor */
+.disabled {
+  background-color: #f0f0f0; /* Change the background color */
+  opacity: 0.5; /* Reduce opacity to indicate it's disabled */
+  pointer-events: none; /* Disable pointer events to prevent interaction */
+  /* Add any other styles you want for the disabled editor */
+}
 
 .HomeButton {
   display: flex;
@@ -226,7 +237,7 @@
   color: white;
   padding: 2px 4px;
   position: absolute;
-  cursor: pointer;
+  cursor: url('./pen.png'), auto;
   transform-style: preserve-3d;
   perspective: 800px;
   transition: transform 0.5s cubic-bezier(0.68, -0.55, 0.27, 1.55);
@@ -262,18 +273,38 @@
   font-size: medium;
   position: relative;
   color: #000000;
+  scrollbar-width: thin; /* "auto" or "thin" for Firefox compatibility */
+  scrollbar-color: #333 #ffffff; /* scrollbar track and thumb colors */
+
+  /* Increase the size of the scrollbar thumb */
+  &::-webkit-scrollbar-thumb {
+    background-color: #333; /* Scrollbar thumb color */
+    border-radius: 10px; /* Rounded corners for the thumb */
+  }
+  
+  /* Increase the size of the scrollbar track (optional) */
+  &::-webkit-scrollbar-track {
+    background-color: #ffffff; /* Scrollbar track color */
+    border-radius: 10px; /* Rounded corners for the track */
+  }
 }
 
 .response-item {
-  background-color: #ffffff; /* Background color */
-  /* border: 1px solid #ddd; Border style */
-  /* padding: 10px;  */
-  margin: 15px; 
-  text-align: center; /* Center text horizontally */
-  font-size: 16px; /* Font size */
-  color: #333; /* Text color */
-  border-radius: 5px; /* Rounded corners */
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Box shadow for a subtle lift */
+  background-color: #f2f2f2; /* Light gray background color */
+  text-align: center;
+  font-size: 13 px;
+  color: #333;
+  border-radius: 10px; /* Slightly rounded corners for a stylish look */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  font-family: 'Poppins', sans-serif;
+  font-weight: 400; /* Lighter font weight */
+  padding: 10px; /* Increased padding for a spacious look */
+  transition: background-color 0.3s ease; /* Smooth background color transition */
+}
+
+/* Hover effect for larger screens */
+.response-item:hover {
+  background-color: #e0e0e0; /* Slightly darker background color on hover */
 }
 
 .input-container {
@@ -292,7 +323,7 @@
 
 .input-container button {
   padding: 10px 20px;
-  background-color: #007bff;
+  background-color: #4F46BB;
   color: #fff;
   border: none;
   border-radius: 4px;
@@ -364,4 +395,232 @@
   text-transform: uppercase;
   letter-spacing: 1px;
   font-family: Plus Jakarta sans-serif;
+}
+
+@media screen and (max-width: 768px) {
+  /* Main app styles */
+  .App {
+
+    width: 100%;
+    height: 100vh
+  }
+
+  /* Input latex styles */
+  .Input-latex {
+    /* Adjust styles as needed for smaller screens */
+  }
+
+  /* Blackboard styles */
+  .blackboard {
+    /* Adjust styles as needed for smaller screens */
+  }
+
+  /* Button styles */
+  .button {
+    /* Adjust styles as needed for smaller screens */
+  }
+
+  .button:hover {
+    /* Adjust styles as needed for smaller screens */
+  }
+
+  /* Convert button styles */
+  .Convert-Btn {
+    /* Adjust styles as needed for smaller screens */
+  }
+
+  .Convert-Btn:hover {
+    /* Adjust styles as needed for smaller screens */
+  }
+
+  /* Additional styles can be added here */
+
+  .math-field {
+    /* Adjust styles as needed for smaller screens */
+  }
+
+  .HomePageButtons {
+    /* Adjust styles as needed for smaller screens */
+  }
+
+  .KeyboardButton {
+    /* Adjust styles as needed for smaller screens */
+  }
+
+  .KeyboardButton:hover {
+    /* Adjust styles as needed for smaller screens */
+  }
+
+  .send-btn {
+    /* Adjust styles as needed for smaller screens */
+    left: 6vh;
+    top: 43vh;
+    height: 4vh;
+    position: relative;
+    width: 12vh;
+    background-color: transparent;
+    float: right;
+  }
+
+  /* Your CSS file, e.g., styles.css */
+
+  /* Styling for the button with className "send-res-value" */
+  .send-res-value {
+    /* Adjust styles as needed for smaller screens */
+  }
+
+  /* Optional: Hover effect */
+  .send-res-value:hover {
+    /* Adjust styles as needed for smaller screens */
+  }
+
+  .latex-header {
+    /* Adjust styles as needed for smaller screens */
+  }
+
+  /* Style the dropdown */
+  /* Style the dropdown */
+  /* Style the dropdown */
+  /* Style the dropdown */
+
+  .dropdown {
+    /* Adjust styles as needed for smaller screens */
+       /* left: 1vh; */
+       position: relative;
+       background-color: transparent;
+       right: 2vh;
+  }
+
+  /* Style the dropdown button */
+  .dropbtn {
+    /* Adjust styles as needed for smaller screens */
+    font-size: 4vh;
+    left: 1vh;
+  }
+
+  /* Style the dropdown content */
+  .dropdown-content {
+    /* Adjust styles as needed for smaller screens */
+  }
+
+  .dropdown:hover .dropdown-content {
+    left: 1.5vh;
+    position: relative;
+    display: grid;
+    transform: translateY(0);
+    background-color: transparent;
+    width: 100%;
+  } 
+
+  /* Style the dropdown buttons */
+  .dropdown-content button {
+    /* Adjust styles as needed for smaller screens */
+  }
+
+  /* Animate the dropdown buttons */
+  .dropdown:hover .dropdown-content button {
+    /* Adjust styles as needed for smaller screens */
+  }
+
+  /* Highlight the button when hovering over */
+  .dropdown-content button:hover {
+    /* Adjust styles as needed for smaller screens */
+  }
+
+  @keyframes shine {
+    /* Adjust styles as needed for smaller screens */
+  }
+
+  .HomeButton {
+    /* Adjust styles as needed for smaller screens */
+  }
+
+  .HomeButton h2 {
+    /* Adjust styles as needed for smaller screens */
+  }
+
+  .HomeButton:hover h2 {
+    /* Adjust styles as needed for smaller screens */
+  }
+
+
+ 
+
+  .input-container {
+    position: relative;
+    top: 8vh;
+  }
+
+  .input-container input {
+    /* Adjust styles as needed for smaller screens */
+  }
+
+  .input-container button {
+    /* Adjust styles as needed for smaller screens */
+  }
+
+  .loading-container {
+    /* Adjust styles as needed for smaller screens */
+  }
+
+  .loading-text {
+    /* Adjust styles as needed for smaller screens */
+  }
+
+  .loading-animation {
+    /* Adjust styles as needed for smaller screens */
+  }
+
+  .ConvertedLatex {
+    /* Adjust styles as needed for smaller screens */
+  }
+
+  .logo-img {
+    /* Adjust styles as needed for smaller screens */
+  }
+
+  .Latex-field {
+    /* Adjust styles as needed for smaller screens */
+  }
+
+  .response-container {
+    /* Adjust styles for smaller screens */
+    max-height: 44vh;
+    top: 5vh;    
+  }
+
+  .response-item {
+    /* Adjust styles for smaller screens */
+    font-size: 13px;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+    transition: none;
+  }
+  .cross-icon {
+
+    width: 3vh;
+    position: relative;
+    float: right;
+  }
+  /* Add styles for the disabled editor */
+.disabled {
+  background-color: #f0f0f0; /* Change the background color */
+  opacity: 0.5; /* Reduce opacity to indicate it's disabled */
+  pointer-events: none; /* Disable pointer events to prevent interaction */
+  /* Add any other styles you want for the disabled editor */
+}
+
+/* Define the custom pen cursor */
+.pen-cursor {
+  cursor: url('./pen.png'), auto;
+  /* Replace 'path-to-your-pen-cursor.png' with the actual path to your pen cursor image */
+}
+
+
+
+
+
+
+
+
+
 }

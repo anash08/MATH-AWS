@@ -1,7 +1,7 @@
 {
   "files": {
-    "main.css": "/static/css/main.9379d6cb.css",
-    "main.js": "/static/js/main.ed483bcc.js",
+    "main.css": "/static/css/main.b3a3365f.css",
+    "main.js": "/static/js/main.d137afa1.js",
     "static/media/KaTeX_AMS-Regular.ttf": "/static/media/KaTeX_AMS-Regular.853be92419a6c3766b9a.ttf",
     "static/media/KaTeX_Main-Regular.ttf": "/static/media/KaTeX_Main-Regular.9eba1d77abcf2aa6e94e.ttf",
     "static/media/KaTeX_Main-Bold.ttf": "/static/media/KaTeX_Main-Bold.8169508bf58f8bd92ad8.ttf",
@@ -65,15 +65,16 @@
     "static/media/KaTeX_Size3-Regular.woff2": "/static/media/KaTeX_Size3-Regular.e1951519f6f0596f7356.woff2",
     "static/media/convertIcon.svg": "/static/media/convertIcon.9e997bf0b68d893ce8feff7111053bc9.svg",
     "static/media/send-btn.svg": "/static/media/send-btn.778c77c5bfac2be757d3d7a35038c994.svg",
-    "static/media/Delete-btn.svg": "/static/media/Delete-btn.62bc2571ffed2543d9babe1cb571ca2d.svg",
-    "static/media/noun-redo-btn.svg": "/static/media/noun-redo-btn.213ddd8fe66da290617e1d980323bb6d.svg",
-    "static/media/noun-undo-btn.svg": "/static/media/noun-undo-btn.a461ab6dcb62b13b0f246dfdbcbb0551.svg",
     "static/media/loading.svg": "/static/media/loading.70842d754983d25c2e4f0cecddcad13f.svg",
-    "main.9379d6cb.css.map": "/static/css/main.9379d6cb.css.map",
-    "main.ed483bcc.js.map": "/static/js/main.ed483bcc.js.map"
+    "static/media/delete.svg": "/static/media/delete.b28700980249a56d3a0b6bf2851631d6.svg",
+    "static/media/crossIcon.svg": "/static/media/crossIcon.30252da164c2bf87d2c1f49ad612319b.svg",
+    "static/media/undo.svg": "/static/media/undo.5c683b3b0a1df453bc109438acd166af.svg",
+    "static/media/redo.svg": "/static/media/redo.d96c43ee0e6ca932c5324e267f6d62ce.svg",
+    "main.b3a3365f.css.map": "/static/css/main.b3a3365f.css.map",
+    "main.d137afa1.js.map": "/static/js/main.d137afa1.js.map"
   },
   "entrypoints": [
-    "static/css/main.9379d6cb.css",
-    "static/js/main.ed483bcc.js"
+    "static/css/main.b3a3365f.css",
+    "static/js/main.d137afa1.js"
   ]
 }

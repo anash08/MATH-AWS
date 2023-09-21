@@ -8,28 +8,28 @@ import cortexComputeEngine from '@cortex-js/compute-engine'; // Use the actual
 
 import axios from "axios";
 import katex from "katex";
-import deleteIcon from "../Delete-btn.svg";
+import deleteIcon from "../delete.svg";
 import io from "socket.io-client";
 import QRCode from "react-qr-code";
 import "katex/dist/katex.min.css";
 import { InlineMath, BlockMath } from "react-katex";
 import ReactDOM from "react-dom";
 import { QrReader } from "react-qr-reader";
-import undoIcon from "../noun-undo-btn.svg"; // Import the SVG image
-import redoIcon from "../noun-redo-btn.svg"; // Import
+import undoIcon from "../undo.svg"; // Import the SVG image
+import redoIcon from "../redo.svg"; // Import
 import convertIcon from "../convertIcon.svg"; // Import
 import sendIcon from "../send-btn.svg"; // Import
 import loadingAnimation from "../loading.svg"
-
+import cross from "../crossIcon.svg"
 import "../index.css";
 import "../App.css";
 import * as iink from "iink-js";
 
 
-
 // const socket = io("http://18.191.250.59:9000");
 // const socket = io("http://localhost:9000");
-const socket = io("https://unitysocketbuild.onrender.com");
+// const socket = io("https://unitysocketbuild.onrender.com");
+const socket = io("http://172.20.10.3:9000");
 
 const URL = "http://18.191.250.59:9000";
 //............................///..................................//
@@ -58,6 +58,9 @@ const ScientificKeyboard = ({
   const [isLoading, setIsLoading] = useState(false);
   const [inputValue, setInputValue] = useState('');
   const [showSendButton, setShowSendButton] = useState(true);
+
+  const [editorDisabled, setEditorDisabled] = useState(false);
+
 
 
 
@@ -123,12 +126,55 @@ const ScientificKeyboard = ({
 
   const handleUndo = () => {
     editorElement.editor.undo();
+  
+    setPreviousConvertedValues((prevValues) => {
+      if (prevValues.length > 0) {
+        const updatedValues = [...prevValues];
+        const lastValue = updatedValues.pop(); // Remove the last value
+        // Split the expression into individual terms
+        const terms = lastValue.split('+').map((term) => term.trim());
+        
+        // Remove the last term
+        terms.pop();
+  
+        // Join the remaining terms back into a string
+        const updatedValue = terms.join(' + ');
+  
+        // Add the updated value back to the array
+        updatedValues.push(updatedValue);
+  
+        return updatedValues;
+      }
+      return prevValues; // Return the same array if it's empty
+    });
   };
-
+  
   const handleRedo = () => {
     editorElement.editor.redo();
-
+  
+    setPreviousConvertedValues((prevValues) => {
+      if (prevValues.length > 0) {
+        const updatedValues = [...prevValues];
+        const lastValue = updatedValues.pop(); // Remove the last value
+        // Split the expression into individual terms
+        const terms = lastValue.split('+').map((term) => term.trim());
+  
+        // Add a new term or value when redoing (for example, add ' + 1')
+        terms.push('1');
+  
+        // Join the terms back into a string
+        const updatedValue = terms.join(' + ');
+  
+        // Add the updated value back to the array
+        updatedValues.push(updatedValue);
+  
+        return updatedValues;
+      }
+      return prevValues; // Return the same array if it's empty
+    });
   };
+  
+  
 
   const handleClear = () => {
     console.log("////////cleared.........//")
@@ -150,6 +196,7 @@ const ScientificKeyboard = ({
     // Emit the converted value through the socket
     socket.emit("convertedValue", convertedValue);
     clearElement.disabled = false;
+
 
   };
 
@@ -338,6 +385,21 @@ const ScientificKeyboard = ({
         },
       },
     });
+    editorElement.editor.theme = {
+      'ink': {
+        'color': '#FFFFFF',
+        '-myscript-pen-width': 1
+      },
+      '.text': {
+        'font-size': 3
+      },
+      '.greenThickPen': {
+        'color': '#000',
+        '-myscript-pen-width': 1
+      }
+    };
+    editorElement.editor.penStyleClasses = 'greenThickPen';
+
 
 
     socket.on("convertedValue", (convertedValue) => {
@@ -351,7 +413,7 @@ const ScientificKeyboard = ({
       mathNode.innerHTML = renderedValue;
 
       editorElement.appendChild(mathNode);
-      mathNode.style.display = "flex";
+      mathNode.style.display = "contents";
       mathNode.style.alignItems = "center";
       mathNode.style.justifyContent = "center";
       mathNode.style.height = "100%"; // Ensure the mathNode takes up the full height
@@ -459,7 +521,8 @@ const ScientificKeyboard = ({
       // Make a POST request to the server with the converted value
       // const response = await axios.post("http://localhost:8000/run_chain_dynamically", {
       // const response = await axios.post("http://localhost:5000/webhook", {
-      const response = await axios.post("https://webhookforunity.onrender.com/webhook", {
+        // const response = await axios.post("http://192.168.1.18:5000/webhook", {
+        const response = await axios.post("http://172.20.10.3:5000/webhook", {
         convertedValue,
       }, {
         headers: {
@@ -471,10 +534,12 @@ const ScientificKeyboard = ({
 
       // Clear the editor content
 
-        setIsLoading(false);
-        setFetchedData(response.data); // Replace with actual fetched data
-        setShowSendButton(false); // Hide the send button
-        setPreviousConvertedValues([]);
+      setIsLoading(false);
+      setFetchedData(response.data); // Replace with actual fetched data
+      setEditorDisabled(true);
+
+      setShowSendButton(false); // Hide the send button
+      setPreviousConvertedValues([]);
 
       // Hide the loading animation after you have received and processed the data.
     } catch (error) {
@@ -629,22 +694,25 @@ const ScientificKeyboard = ({
     console.log("****************", inputValue);
     try {
       setIsLoading(true); // Show the loading animation when sending data.
-  
+
       // Make a POST request to the server with the converted value
-      const response = await axios.post("https://webhookforunity.onrender.com/res2", {
+      // const response = await axios.post("http://192.168.1.18:5000/res2", {
+      // const response = await axios.post("http://localhost:5000/res2", {
+        const response = await axios.post("http://172.20.10.3:5000/res2", {
         inputValue,
       }, {
         headers: {
           "Content-Type": "application/json",
         },
       });
-  
+
       console.log("Response from the server:", response);
-  
+
       if (typeof response.data === 'string' || response.data instanceof String) {
         // Check if response.data is a string or can be converted to a string
         setIsLoading(false);
         setFetchedData(response.data); // Set the fetched data as a string
+
         setShowSendButton(false); // Hide the send button
         setPreviousConvertedValues([]);
       } else {
@@ -657,7 +725,7 @@ const ScientificKeyboard = ({
           const res2Content = parsedData.res2;
           console.log(res2Content, "*******************************************sadasd****");
 
-          
+
           setIsLoading(false);
           setFetchedData(res2Content); // Convert JSON to string
           setShowSendButton(false); // Hide the send button
@@ -668,7 +736,7 @@ const ScientificKeyboard = ({
           // You can set an appropriate error message or handle it according to your needs.
         }
       }
-  
+
       // Hide the loading animation after you have received and processed the data.
     } catch (error) {
       console.error("Error sending converted value:", error);
@@ -677,11 +745,18 @@ const ScientificKeyboard = ({
       setIsLoading(false);
       // Ensure that even if there's an error, the loading animation is turned off.
     }
-  
+
     // Clear the previous converted values and the send element
     setPreviousConvertedValues([]);
   };
-  
+
+  const handleClose = () => {
+    setFetchedData(false)
+    window.location.reload(); // Reloads the page
+
+  };
+
+
 
 
 
@@ -689,217 +764,228 @@ const ScientificKeyboard = ({
     <div>
 
 
+      {!fetchedData && (
 
-      <div
-        id="editor"
-        className="canvas-editor "
-        style={{
-
-        }}
-      >
         <div
-          style={{
-            display: "flex",
-            flexDirection: "row",
-            alignItems: "center",
-            justifyContent: "center",
-          }}
-          id="convertedValuesContainer"
-        >
+          id="editor"
+          className={`canvas-editor`}>
 
-          {/* Rendered converted values will go here */}
-        </div>
-
-
-
-        <h1 style={{ color: "grey" }}>Write Here:</h1>
-
-
-
-
-
-
-        <code> {value}</code>
-
-        <div className="ThreeDotMenu">
-          <nav
+          <div
             style={{
-              width: "100%",
-              backgroundColor: "white",
-              padding: "10px",
-              boxShadow: "0px 2px 4px rgba(0, 0, 0, 0.5)",
-              zIndex: "1",
-              position: "sticky",
-              top: "0",
-              display: "contents",
+              display: "flex",
+              flexDirection: "row",
+              alignItems: "center",
+              justifyContent: "center",
             }}
+            id="convertedValuesContainer"
           >
-            <div className="button-div">
+
+            {/* Rendered converted values will go here */}
+          </div>
 
 
-              {/* Dropdown Button */}
 
-
-              <div className="dropdown">
-                <button className="dropbtn">&#x22EE;</button>
-                <div className="dropdown-content">
-
-
-                  {/* Buttons in Dropdown */}
-
-
-                  <button id="clear" onClick={handleClear} disabled={false} style={{
-                    // backgroundColor: "#0383be",
-                    // boxShadow: "0px 2px 4px rgba(0, 255, 255, 0.3)",
-                    backgroundColor: "transparent",
-
-                    padding: "14px",
-                    backgroundImage: `url(${deleteIcon})`,
-                    backgroundSize: "contain",
-                    backgroundRepeat: "no-repeat",
-                    backgroundPosition: "center",
-                    marginBottom: "8px",
-                  }}>
-                    <deleteIcon style={{ width: "70%", height: "70%" }} />
-                  </button>
-
-
-                  <button id="undo" onClick={handleUndo} style={{
-                    // boxShadow: "0px 2px 4px rgba(0, 255, 255, 0.3)",
-                    backgroundColor: "transparent",
-
-                    padding: "14px",
-                    backgroundImage: `url(${undoIcon})`,
-                    backgroundSize: "contain",
-                    backgroundRepeat: "no-repeat",
-                    backgroundPosition: "center",
-                    marginBottom: "8px",
-                  }}>
-                    <undoIcon style={{ width: "70%", height: "70%" }} />
-                  </button>
-
-
-                  <button id="redo" onClick={handleRedo} style={{
-                    // backgroundColor: "#0383be",
-                    // boxShadow: "0px 2px 4px rgba(0, 255, 255, 0.3)",
-                    backgroundColor: "transparent",
-
-                    padding: "14px",
-                    backgroundImage: `url(${redoIcon})`,
-                    backgroundSize: "contain",
-                    backgroundRepeat: "no-repeat",
-                    backgroundPosition: "center",
-                    marginBottom: "8px",
-                  }}>
-                    <redoIcon style={{ width: "70%", height: "70%" }} />
-
-                  </button>
-
-
-                  <button id="convert" onClick={handleConvertElement} style={{
-                    // boxShadow: "0px 2px 4px rgba(0, 255, 255, 0.3)",
-                    padding: "14px", // Add padding here to increase the size of the button
-                    backgroundImage: `url(${convertIcon})`,
-
-                    backgroundSize: "contain",
-                    backgroundRepeat: "no-repeat",
-                    backgroundColor: "transparent",
-
-                    backgroundPosition: "center",
-                    marginBottom: "8px",
-                  }}>
-                    <convertIcon style={{ width: "70%", height: "70%" }} />
-
-                  </button>
+          <h1 style={{ color: "grey" }}>Write Here:</h1>
 
 
 
 
-                  {/* Add other buttons as needed */}
+
+
+          <code> {value}</code>
+
+          <div className="ThreeDotMenu">
+            <nav
+              style={{
+                width: "100%",
+                backgroundColor: "white",
+                padding: "10px",
+                boxShadow: "0px 2px 4px rgba(0, 0, 0, 0.5)",
+                zIndex: "1",
+                position: "sticky",
+                top: "0",
+                display: "contents",
+              }}
+            >
+              <div className="button-div">
+
+
+                {/* Dropdown Button */}
+
+
+                <div className="dropdown">
+                  <button className="dropbtn">&#x22EE;</button>
+                  <div className="dropdown-content">
+
+
+                    {/* Buttons in Dropdown */}
+
+
+                    <button id="clear" onClick={handleClear} disabled={false} style={{
+                      // backgroundColor: "#0383be",
+                      // boxShadow: "0px 2px 4px rgba(0, 255, 255, 0.3)",
+                      backgroundColor: "transparent",
+
+                      padding: "14px",
+                      backgroundImage: `url(${deleteIcon})`,
+                      backgroundSize: "contain",
+                      backgroundRepeat: "no-repeat",
+                      backgroundPosition: "center",
+                      marginBottom: "8px",
+                    }}>
+                      <deleteIcon style={{ width: "70%", height: "70%" }} />
+                    </button>
+
+
+                    <button id="undo" onClick={handleUndo} style={{
+                      // boxShadow: "0px 2px 4px rgba(0, 255, 255, 0.3)",
+                      backgroundColor: "transparent",
+
+                      padding: "14px",
+                      backgroundImage: `url(${undoIcon})`,
+                      backgroundSize: "contain",
+                      backgroundRepeat: "no-repeat",
+                      backgroundPosition: "center",
+                      marginBottom: "8px",
+                    }}>
+                      <undoIcon style={{ width: "70%", height: "70%" }} />
+                    </button>
+
+
+                    <button id="redo" onClick={handleRedo} style={{
+                      // backgroundColor: "#0383be",
+                      // boxShadow: "0px 2px 4px rgba(0, 255, 255, 0.3)",
+                      backgroundColor: "transparent",
+
+                      padding: "14px",
+                      backgroundImage: `url(${redoIcon})`,
+                      backgroundSize: "contain",
+                      backgroundRepeat: "no-repeat",
+                      backgroundPosition: "center",
+                      marginBottom: "8px",
+                    }}>
+                      <redoIcon style={{ width: "70%", height: "70%" }} />
+
+                    </button>
+
+
+                    <button id="convert" onClick={handleConvertElement} style={{
+                      // boxShadow: "0px 2px 4px rgba(0, 255, 255, 0.3)",
+                      padding: "14px", // Add padding here to increase the size of the button
+                      backgroundImage: `url(${convertIcon})`,
+
+                      backgroundSize: "contain",
+                      backgroundRepeat: "no-repeat",
+                      backgroundColor: "transparent",
+
+                      backgroundPosition: "center",
+                      marginBottom: "8px",
+                    }}>
+                      <convertIcon style={{ width: "70%", height: "70%" }} />
+
+                    </button>
+
+
+
+
+                    {/* Add other buttons as needed */}
+                  </div>
                 </div>
               </div>
-            </div>
-          </nav>
-        </div>
+            </nav>
+          </div>
 
 
-        <div>
+
+
+
+
+
+
+
+
+
+
+
           {showSendButton && (
             <button
               className="send-btn"
               id="send"
               style={{
-                padding: "60px",
-                backgroundImage: `url(${sendIcon})`,
-                backgroundSize: "contain",
-                backgroundRepeat: "no-repeat",
-                backgroundColor: "transparent",
-                backgroundPosition: "center",
+
               }}
               onClick={handleSend}
             >
               <img
                 src={sendIcon}
                 alt="Send"
-                style={{ width: "70%", height: "50%" }}
               />
             </button>
           )}
-          {isLoading && (
-            <div className="loading-container">
-              <img src={loadingAnimation} alt="Loading" />
-              <p>Loading...</p>
-            </div>
-          )}
-          {fetchedData && (
-            <div className="response-container">
-              {fetchedData.split('\n').map((step) => (
-                <div className="response-item" key={step}>
-                  {step}
-                </div>
-              ))}
-            </div>
-          )}
-          {fetchedData && (
-            <div className="input-container">
-              <input
-                type="text"
-                placeholder="Enter something"
-                value={inputValue}
-                onChange={handleInputChange}
-              />
-              {!showSendButton && (
-                <button className="send-res-value"  onClick={handleSendValue}>Send</button>
-              )}
-            </div>
-          )}
         </div>
+      )}
 
 
+      <div>
+        {isLoading && (
+          <div className="loading-container">
+            <img src={loadingAnimation} alt="Loading" />
+            <p>Loading...</p>
+          </div>
+        )}
+        {fetchedData && (
+
+          <div className="response-container">
+            {isLoading ? (
+              <div className="loading-container">
+                <img src={loadingAnimation} alt="Loading" />
+                <p>Loading...</p>
+              </div>
+            ) : (
+              <img
+                src={cross}
+                alt="Cross"
+                className="cross-icon"
+                onClick={handleClose}
+              />
+            )}
+
+            {fetchedData.split('\n').map((step) => (
+              <div className="response-item" key={step}>
+                {step}
+              </div>
+            ))}
+          </div>
+        )}
+        {fetchedData && (
+          <div className="input-container">
+            <input
+              type="text"
+              placeholder="Enter something"
+              value={inputValue}
+              onChange={handleInputChange}
+            />
+            {!showSendButton && (
+              <button className="send-res-value" onClick={handleSendValue}>Send</button>
+            )}
+          </div>
+        )}
+      </div>
 
 
+      {!fetchedData && (
 
-        <div
-          className="Input-latex"
+
+        <div className="ConvertedLatex" id="sendValueLatex"
           style={{
+
           }}
         >
-
-
-
+          {previousConvertedValues.join(" ")}
         </div>
 
-
-
-
-      </div>
-      <div className="ConvertedLatex" id="sendValueLatex"
-        style={{
-
-        }}
-      >
-        {previousConvertedValues.join(" ")}
-      </div>
+      )
+      }
 
 
       <div className="latex-header" style={{ display: "-ms-flexbox" }}>
@@ -914,65 +1000,69 @@ const ScientificKeyboard = ({
           style={{ position: "absolute", top: 0, right: 0 }}
         /> */}
 
+        {!fetchedData && (
 
-        <div style={{
-          display: 'table',
-          // border: '2px solid #00537f', // Darker border color
-          borderRadius: '20px',
-          marginTop: '1vh',
-          // fontFamily: 'system-ui',
-        }}>
-          <h2 className="Latex-field" style={{
-            display: 'flex',
-            // background: 'linear-gradient(135deg, #00537f, #002b40)',
-            // background: "#9B9C9E",
-            padding: '2px 20px',
-            borderRadius: '8px',
-            // boxShadow: '0px 4px 6px rgba(0, 0, 0, 0.1)',
-            margin: 0,
-            fontWeight: 'bold',
-            transform: 'rotateY(0deg) translateZ(0)',
+          <div style={{
+            display: 'table',
+            // border: '2px solid #00537f', // Darker border color
+            borderRadius: '20px',
+            marginTop: '1vh',
+            // fontFamily: 'system-ui',
+          }}>
+            <h2 className="Latex-field" style={{
+              display: 'flex',
+              // background: 'linear-gradient(135deg, #00537f, #002b40)',
+              // background: "#9B9C9E",
+              padding: '2px 20px',
+              borderRadius: '8px',
+              // boxShadow: '0px 4px 6px rgba(0, 0, 0, 0.1)',
+              margin: 0,
+              fontWeight: 'bold',
+              transform: 'rotateY(0deg) translateZ(0)',
 
-          }}
-            onMouseEnter={(e) => {
-              e.target.style.transform = 'rotateY(360deg) translateZ(30px)';
             }}
-            onMouseLeave={(e) => {
-              e.target.style.transform = 'rotateY(0deg) translateZ(0)';
-            }}
+              onMouseEnter={(e) => {
+                e.target.style.transform = 'rotateY(360deg) translateZ(30px)';
+              }}
+              onMouseLeave={(e) => {
+                e.target.style.transform = 'rotateY(0deg) translateZ(0)';
+              }}
 
 
-          >
-            LaTeX
+            >
+              LaTeX
 
 
-            {/*             
+              {/*             
             <math-field ref={mf} onInput={(evt) => setValue(evt.target.value)}>
                       {value}
                     </math-field> */}
 
-          </h2>
-        </div>
+            </h2>
+          </div>
+        )}
 
+        {!fetchedData && (
 
+          <div
+            id="result"
+            className="blackboard"
+            style={{
 
-        <div
-          id="result"
-          className="blackboard"
-          style={{
+              color: "white",
 
-            color: "white",
+            }}
+          >
+            {convertedValues && (
+              <div>
+                {convertedValues.map((value, index) => (
+                  <div key={index}>{value}</div>
+                ))}
+              </div>
+            )}
+          </div>
+        )}
 
-          }}
-        >
-          {convertedValues && (
-            <div>
-              {convertedValues.map((value, index) => (
-                <div key={index}>{value}</div>
-              ))}
-            </div>
-          )}
-        </div>
       </div>
 
     </div>
